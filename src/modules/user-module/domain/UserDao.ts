@@ -1,4 +1,4 @@
-export interface UserModel {
+export interface UserDAO {
     id: string;
     createdAt: Date;
     updatedAt: Date;

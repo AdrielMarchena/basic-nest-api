@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Post, Put } from "@nestjs/common";
+import { Body, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { Entity } from "../domain/Entity";
 import { IRepository } from "./Repository";
 import { IViewDataParser } from "../domain/ViewDataParser";
@@ -10,18 +10,18 @@ export abstract class CrudController<TEntity extends Entity, TModel> {
     ) { }
 
 
-    @Get()
-    async get(@Body() body: any): Promise<TModel> {
-        const entity = await this._repository.findById(body.id);
+    @Get(':id')
+    async get(@Param('id') id: string): Promise<TModel> {
+        const entity = await this._repository.findById(id);
         if (!entity) {
-            throw new Error(`Entity with id ${body.id} not found`);
+            throw new Error(`Entity with id ${id} not found`);
         }
         return this._dataParser.toModel(entity);
     }
 
     @Post()
     async create(@Body() entity: TModel): Promise<TModel> {
-        const possibleEntity = this._dataParser.toEntity(entity);
+        const possibleEntity = this._dataParser.toNewEntity(entity);
         const newEntity = await this._repository.create(possibleEntity);
         return this._dataParser.toModel(newEntity);
     }
@@ -32,15 +32,15 @@ export abstract class CrudController<TEntity extends Entity, TModel> {
         return entities.map(entity => this._dataParser.toModel(entity));
     }
 
-    @Put()
-    async update(@Body() entity: TModel): Promise<TModel> {
+    @Put(':id')
+    async update(@Param('id') id: string, @Body() entity: TModel): Promise<TModel> {
         const possibleEntity = this._dataParser.toEntity(entity);
-        const updatedEntity = await this._repository.update(possibleEntity.id, possibleEntity);
+        const updatedEntity = await this._repository.update(id, possibleEntity);
         return this._dataParser.toModel(updatedEntity);
     }
 
     @Delete()
-    async delete(@Body() body: any): Promise<void> {
-        return await this._repository.delete(body.id);
+    async delete(@Param('id') id: string): Promise<void> {
+        return await this._repository.delete(id);
     }
 }

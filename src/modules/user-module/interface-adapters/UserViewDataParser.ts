@@ -6,6 +6,7 @@ import { v4 as newId } from 'uuid';
 
 @Injectable()
 export class UserViewDataParser implements IViewDataParser<User, UserModel> {
+
     toModel(entity: User): UserModel {
         console.log(entity);
         return {
@@ -18,12 +19,25 @@ export class UserViewDataParser implements IViewDataParser<User, UserModel> {
         };
     }
 
-    toEntity(model: UserModel): User {
-        return User.fromData(
+    toNewEntity(model: UserModel): User {
+        return User.newFromData(
             {
                 id: model.id ?? newId(),
                 createdAt: model.createdAt ?? new Date(),
                 updatedAt: model.updatedAt ?? new Date(),
+                name: model.name,
+                email: model.email,
+                password: model.password,
+            }
+        );
+    }
+
+    toEntity(model: UserModel): User {
+        return User.fromData(
+            {
+                id: model.id,
+                createdAt: model.createdAt,
+                updatedAt: model.updatedAt,
                 name: model.name,
                 email: model.email,
                 password: model.password,

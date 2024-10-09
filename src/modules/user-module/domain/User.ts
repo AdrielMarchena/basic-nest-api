@@ -34,6 +34,17 @@ export class User extends Entity {
         return new User(data.id, data.createdAt, data.updatedAt, data.name, data.email, data.password);
     }
 
+    public static newFromData(data: Partial<UserData>): User {
+        return new User(
+            newId(),
+            new Date(),
+            new Date(),
+            data.name,
+            data.email,
+            data.password
+        );
+    }
+
     public withName(name: string): User {
         return this.copyWith({ name });
     }

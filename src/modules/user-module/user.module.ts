@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
-import { RedisDbDriver } from "../core-module/interface-adapters/RedisDbDriver";
 import { UserDataParser } from "./interface-adapters/UserDataParser";
 import { UserRepository } from "./interface-adapters/UserRepository";
 import { UserViewDataParser } from "./interface-adapters/UserViewDataParser";
 import { UserController } from "./interface-adapters/UserController";
+import { MongoDbDriver } from "../core-module/interface-adapters/MongoDbDriver";
 
 @Module({
     imports: [],
@@ -15,9 +15,12 @@ import { UserController } from "./interface-adapters/UserController";
         UserViewDataParser,
         UserRepository,
         {
-            provide: RedisDbDriver,
+            provide: MongoDbDriver,
             useFactory: async () => {
-                const instance = new RedisDbDriver()
+                const instance = new MongoDbDriver(
+                    'mongodb://localhost:27017',
+                    "api"
+                )
                 await instance.connect()
                 return instance
             }

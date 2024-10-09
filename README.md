@@ -45,8 +45,11 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Pull Container
+$ docker pull mongodb/mongodb-community-server:latest
+
 ## Run Container
-$ docker run -p 6379:6379 -it redis/redis-stack-server:latest
+$ docker run --name mongodb -p 27017:27017 -d mongodb/mongodb-community-server:latest
 
 ## Run tests
 

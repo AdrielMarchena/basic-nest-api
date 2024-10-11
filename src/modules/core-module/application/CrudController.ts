@@ -2,6 +2,39 @@ import { Body, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { Entity } from "../domain/Entity";
 import { IRepository } from "./Repository";
 import { IViewDataParser } from "../domain/ViewDataParser";
+import { ApiBody } from "@nestjs/swagger";
+
+function addMethodDecorator(target: any, methodName: string, decorator: MethodDecorator) {
+    const descriptor = Object.getOwnPropertyDescriptor(target.prototype, methodName);
+    if (descriptor) {
+        decorator(target.prototype, methodName, descriptor);
+        Object.defineProperty(target.prototype, methodName, descriptor);
+    }
+}
+
+function addParameterDecorator(target: any, methodName: string, parameterIndex: number, decorator: ParameterDecorator) {
+    decorator(target.prototype, methodName, parameterIndex);
+}
+
+export function applyDecorators(target: any, t: any) {
+    addMethodDecorator(target, 'get', Get(':id'));
+
+    addMethodDecorator(target, 'create', Post());
+    addMethodDecorator(target, 'create', ApiBody({ type: t }));
+
+    addMethodDecorator(target, 'getAll', Get('/all'));
+
+    addMethodDecorator(target, 'update', Put(':id'));
+    addMethodDecorator(target, 'update', ApiBody({ type: t }));
+
+    addMethodDecorator(target, 'delete', Delete(':id'));
+
+    addParameterDecorator(target, 'get', 0, Param('id'));
+    addParameterDecorator(target, 'create', 0, Body());
+    addParameterDecorator(target, 'update', 0, Param('id'));
+    addParameterDecorator(target, 'update', 1, Body());
+    addParameterDecorator(target, 'delete', 0, Param('id'));
+}
 
 export abstract class CrudController<TEntity extends Entity, TModel> {
     constructor(

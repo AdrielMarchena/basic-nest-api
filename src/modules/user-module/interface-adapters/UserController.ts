@@ -1,4 +1,4 @@
-import { CrudController } from "src/modules/core-module/application/CrudController";
+import { applyDecorators, CrudController } from "src/modules/core-module/application/CrudController";
 import { UserRepository } from "./UserRepository";
 import { UserViewDataParser } from "./UserViewDataParser";
 import { User } from "../domain/User";
@@ -13,4 +13,26 @@ export class UserController extends CrudController<User, UserModel> {
     ) {
         super(_repository, _viewDataParser);
     }
+
+    override async get(id: string): Promise<UserModel> {
+        return super.get(id);
+    }
+
+    override async create(entity: UserModel): Promise<UserModel> {
+        return super.create(entity);
+    }
+
+    override async getAll(): Promise<UserModel[]> {
+        return super.getAll();
+    }
+
+    override async update(id: string, entity: UserModel): Promise<UserModel> {
+        return super.update(id, entity);
+    }
+
+    override async delete(id: string): Promise<void> {
+        return super.delete(id);
+    }
 }
+
+applyDecorators(UserController, UserModel);

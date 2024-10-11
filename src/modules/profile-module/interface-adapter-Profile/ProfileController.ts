@@ -7,7 +7,6 @@ import { ProfileModel } from "../domain-Profile/ProfileModel";
 import { ApiExtraModels, ApiTags } from "@nestjs/swagger";
 
 @ApiTags("profiles")
-@ApiExtraModels(ProfileModel)
 @Controller("api/profiles")
 export class ProfileController extends CrudController<Profile, ProfileModel> {
     constructor(

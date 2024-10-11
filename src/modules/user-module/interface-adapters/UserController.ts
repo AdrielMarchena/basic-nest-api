@@ -4,7 +4,9 @@ import { UserViewDataParser } from "./UserViewDataParser";
 import { User } from "../domain/User";
 import { UserModel } from "../domain/UserModel";
 import { Controller } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("users")
 @Controller("api/users")
 export class UserController extends CrudController<User, UserModel> {
     constructor(

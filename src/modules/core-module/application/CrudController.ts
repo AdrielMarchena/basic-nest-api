@@ -22,7 +22,7 @@ export function applyDecorators(target: any, t: any) {
     addMethodDecorator(target, 'create', Post());
     addMethodDecorator(target, 'create', ApiBody({ type: t }));
 
-    addMethodDecorator(target, 'getAll', Get('/all'));
+    addMethodDecorator(target, 'getAll', Get());
 
     addMethodDecorator(target, 'update', Put(':id'));
     addMethodDecorator(target, 'update', ApiBody({ type: t }));
@@ -59,7 +59,7 @@ export abstract class CrudController<TEntity extends Entity, TModel> {
         return this._dataParser.toModel(newEntity);
     }
 
-    @Get("/all")
+    @Get()
     async getAll(): Promise<TModel[]> {
         const entities = await this._repository.findAll();
         return entities.map(entity => this._dataParser.toModel(entity));

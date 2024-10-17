@@ -1,4 +1,4 @@
-import { applyDecorators, CrudController } from "src/modules/core-module/application/CrudController";
+import { CrudController } from "src/modules/core-module/application/CrudController";
 import { UserRepository } from "./UserRepository";
 import { UserViewDataParser } from "./UserViewDataParser";
 import { User } from "../domain/User";
@@ -37,4 +37,4 @@ export class UserController extends CrudController<User, UserModel> {
     }
 }
 
-applyDecorators(UserController, UserModel);
+UserController.applyDecorators(UserController, UserModel);

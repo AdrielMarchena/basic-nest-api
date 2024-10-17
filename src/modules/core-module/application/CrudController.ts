@@ -1,47 +1,15 @@
-import { Body, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Delete, Get, Param, Post, Put, Type } from "@nestjs/common";
 import { Entity } from "../domain/Entity";
 import { IRepository } from "./Repository";
 import { IViewDataParser } from "../domain/ViewDataParser";
 import { ApiBody } from "@nestjs/swagger";
 
-function addMethodDecorator(target: any, methodName: string, decorator: MethodDecorator) {
-    const descriptor = Object.getOwnPropertyDescriptor(target.prototype, methodName);
-    if (descriptor) {
-        decorator(target.prototype, methodName, descriptor);
-        Object.defineProperty(target.prototype, methodName, descriptor);
-    }
-}
-
-function addParameterDecorator(target: any, methodName: string, parameterIndex: number, decorator: ParameterDecorator) {
-    decorator(target.prototype, methodName, parameterIndex);
-}
-
-export function applyDecorators(target: any, t: any) {
-    addMethodDecorator(target, 'get', Get(':id'));
-
-    addMethodDecorator(target, 'create', Post());
-    addMethodDecorator(target, 'create', ApiBody({ type: t }));
-
-    addMethodDecorator(target, 'getAll', Get());
-
-    addMethodDecorator(target, 'update', Put(':id'));
-    addMethodDecorator(target, 'update', ApiBody({ type: t }));
-
-    addMethodDecorator(target, 'delete', Delete(':id'));
-
-    addParameterDecorator(target, 'get', 0, Param('id'));
-    addParameterDecorator(target, 'create', 0, Body());
-    addParameterDecorator(target, 'update', 0, Param('id'));
-    addParameterDecorator(target, 'update', 1, Body());
-    addParameterDecorator(target, 'delete', 0, Param('id'));
-}
-
 export abstract class CrudController<TEntity extends Entity, TModel> {
     constructor(
         public readonly _repository: IRepository<TEntity>,
-        public readonly _dataParser: IViewDataParser<TEntity, TModel>
-    ) { }
-
+        public readonly _dataParser: IViewDataParser<TEntity, TModel>,
+    ) {
+    }
 
     @Get(':id')
     async get(@Param('id') id: string): Promise<TModel> {
@@ -75,5 +43,46 @@ export abstract class CrudController<TEntity extends Entity, TModel> {
     @Delete()
     async delete(@Param('id') id: string): Promise<void> {
         return await this._repository.delete(id);
+    }
+
+    private static addMethodDecorator(target: any, methodName: string, decorator: MethodDecorator) {
+        const descriptor = Object.getOwnPropertyDescriptor(target.prototype, methodName);
+        if (descriptor) {
+            decorator(target.prototype, methodName, descriptor);
+            Object.defineProperty(target.prototype, methodName, descriptor);
+        }
+    }
+
+    private static addParameterDecorator(target: any, methodName: string, parameterIndex: number, decorator: ParameterDecorator) {
+        decorator(target.prototype, methodName, parameterIndex);
+    }
+
+    public static applyDecorators(target: Type, apiBody: Type, endpoints: string[] = ["get", "create", "getAll", "update", "delete"],) {
+        if (endpoints.includes('get')) {
+            CrudController.addMethodDecorator(target, 'get', Get(':id'));
+            CrudController.addParameterDecorator(target, 'get', 0, Param('id'));
+        }
+
+        if (endpoints.includes('create')) {
+            CrudController.addMethodDecorator(target, 'create', Post());
+            CrudController.addMethodDecorator(target, 'create', ApiBody({ type: apiBody }));
+            CrudController.addParameterDecorator(target, 'create', 0, Body());
+        }
+
+        if (endpoints.includes('getAll')) {
+            CrudController.addMethodDecorator(target, 'getAll', Get());
+        }
+
+        if (endpoints.includes('update')) {
+            CrudController.addMethodDecorator(target, 'update', Put(':id'));
+            CrudController.addMethodDecorator(target, 'update', ApiBody({ type: apiBody }));
+            CrudController.addParameterDecorator(target, 'update', 0, Param('id'));
+            CrudController.addParameterDecorator(target, 'update', 1, Body());
+        }
+
+        if (endpoints.includes('delete')) {
+            CrudController.addMethodDecorator(target, 'delete', Delete(':id'));
+            CrudController.addParameterDecorator(target, 'delete', 0, Param('id'));
+        }
     }
 }

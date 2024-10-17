@@ -1,4 +1,4 @@
-import { applyDecorators, CrudController } from "src/modules/core-module/application/CrudController";
+import { CrudController } from "src/modules/core-module/application/CrudController";
 import { Controller } from "@nestjs/common";
 import { Profile } from "../domain-Profile/Profile";
 import { ProfileRepository } from "./ProfileRepository";
@@ -14,6 +14,7 @@ export class ProfileController extends CrudController<Profile, ProfileModel> {
         public readonly _viewDataParser: ProfileViewDataParser,
     ) {
         super(_repository, _viewDataParser);
+        console.log(this.constructor.name);
     }
 
     override async get(id: string): Promise<ProfileModel> {
@@ -37,4 +38,4 @@ export class ProfileController extends CrudController<Profile, ProfileModel> {
     }
 }
 
-applyDecorators(ProfileController, ProfileModel);
+ProfileController.applyDecorators(ProfileController, ProfileModel);

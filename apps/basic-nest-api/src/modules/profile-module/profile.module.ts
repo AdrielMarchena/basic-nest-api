@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 import { MongoDbDriver } from "../core-module/interface-adapters/MongoDbDriver";
-import { ProfileController } from "./interface-adapter-Profile/ProfileController";
-import { ProfileDataParser } from "./interface-adapter-Profile/ProfileDataParser";
-import { ProfileViewDataParser } from "./interface-adapter-Profile/ProfileViewDataParser";
-import { ProfileRepository } from "./interface-adapter-Profile/ProfileRepository";
+import { ProfileController } from "./interface-adapter/ProfileController";
+import { ProfileDataParser } from "./interface-adapter/ProfileDataParser";
+import { ProfileViewDataParser } from "./interface-adapter/ProfileViewDataParser";
+import { ProfileRepository } from "./interface-adapter/ProfileRepository";
 
 @Module({
     imports: [],

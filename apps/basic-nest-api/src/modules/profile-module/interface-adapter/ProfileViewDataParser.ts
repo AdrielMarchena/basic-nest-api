@@ -1,13 +1,13 @@
 import { IViewDataParser } from "src/modules/core-module/domain/ViewDataParser";
-import { User } from "@repo/access";
-import { UserModel } from "../domain/UserModel";
 import { Injectable } from "@nestjs/common";
 import { v4 as newId } from 'uuid';
+import { Profile } from "../domain/Profile";
+import { ProfileModel } from "../domain/ProfileModel";
 
 @Injectable()
-export class UserViewDataParser implements IViewDataParser<User, UserModel> {
+export class ProfileViewDataParser implements IViewDataParser<Profile, ProfileModel> {
 
-    toModel(entity: User): UserModel {
+    toModel(entity: Profile): ProfileModel {
         console.log(entity);
         return {
             id: entity.id,
@@ -15,31 +15,37 @@ export class UserViewDataParser implements IViewDataParser<User, UserModel> {
             updatedAt: entity.updatedAt,
             name: entity.name,
             email: entity.email,
+            describe: entity.describe,
+            birth: entity.birth,
             password: entity.password,
         };
     }
 
-    toNewEntity(model: UserModel): User {
-        return User.newFromData(
+    toNewEntity(model: ProfileModel): Profile {
+        return Profile.newFromProfileData(
             {
                 id: model.id ?? newId(),
                 createdAt: model.createdAt ?? new Date(),
                 updatedAt: model.updatedAt ?? new Date(),
                 name: model.name,
                 email: model.email,
+                describe: model.describe,
+                birth: model.birth,
                 password: model.password,
             }
         );
     }
 
-    toEntity(model: UserModel): User {
-        return User.fromData(
+    toEntity(model: ProfileModel): Profile {
+        return Profile.fromProfileData(
             {
                 id: model.id,
                 createdAt: model.createdAt,
                 updatedAt: model.updatedAt,
                 name: model.name,
                 email: model.email,
+                describe: model.describe,
+                birth: model.birth,
                 password: model.password,
             }
         );

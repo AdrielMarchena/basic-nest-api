@@ -1,0 +1,20 @@
+{
+    "name": "@repo/access",
+    "version": "0.0.1",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "dev": "tsup src/index.ts --dts --watch",
+        "build": "tsup src/index.ts --dts --minify",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage"
+    },
+    "dependencies": {
+        "@repo/core": "*"
+    },
+    "devDependencies": {
+        "@repo/typescript-config": "*",
+        "typescript": "latest"
+    }
+}

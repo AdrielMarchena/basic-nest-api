@@ -1,8 +1,8 @@
 import { Body, Delete, Get, Param, Post, Put, Type } from "@nestjs/common";
-import { Entity } from "../domain/Entity";
 import { IRepository } from "./Repository";
 import { IViewDataParser } from "../domain/ViewDataParser";
 import { ApiBody } from "@nestjs/swagger";
+import { Entity } from "@repo/core";
 
 export abstract class CrudController<TEntity extends Entity, TModel> {
     constructor(

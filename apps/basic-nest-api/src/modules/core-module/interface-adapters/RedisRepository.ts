@@ -1,6 +1,6 @@
+import { Entity } from "@repo/core";
 import { IRepository } from "../application/Repository";
 import { IDataParser } from "../domain/DataParser";
-import { Entity } from "../domain/Entity";
 import { RedisDbDriver } from "./RedisDbDriver";
 
 export abstract class RedisRepository<TEntity extends Entity> implements IRepository<TEntity> {

@@ -1,10 +1,10 @@
 import { CrudController } from "src/modules/core-module/application/CrudController";
 import { UserRepository } from "./UserRepository";
 import { UserViewDataParser } from "./UserViewDataParser";
-import { User } from "../domain/User";
 import { UserModel } from "../domain/UserModel";
 import { Controller } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
+import { User } from "@repo/access";
 
 @ApiTags("users")
 @Controller("api/users")

@@ -1,8 +1,8 @@
 import { Collection } from "mongodb";
 import { IRepository } from "../application/Repository";
 import { IDataParser } from "../domain/DataParser";
-import { Entity } from "../domain/Entity";
 import { MongoDbDriver } from "./MongoDbDriver";
+import { Entity } from "@repo/core";
 
 export abstract class MongoDbRepository<TEntity extends Entity, TDao> implements IRepository<TEntity> {
     constructor(

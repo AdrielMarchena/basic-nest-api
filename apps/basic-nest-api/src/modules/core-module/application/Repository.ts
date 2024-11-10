@@ -1,4 +1,4 @@
-import { Entity } from "../domain/Entity";
+import { Entity } from "@repo/core";
 
 export interface IRepository<TEntity extends Entity> {
     create(entity: TEntity): Promise<TEntity>;
